@@ -26,7 +26,10 @@ public_users.post("/register", (req,res) => {
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
     //Gets the list of books and displays, check in postman with a Get request
-    return res.status(200).json(books);
+    const booksString = JSON.stringify(books, null, 2);
+
+    // Send it as a JSON response
+    res.status(200).send(booksString);
 });
 
 // Get book details based on ISBN

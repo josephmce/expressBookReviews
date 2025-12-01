@@ -9,13 +9,6 @@ const doesExist = (username) => {
     return users.some(user => user.username === username);
   };
 
-const isValid = (username)=>{ //returns boolean
-//write code to check is the username is valid
-  let userswithsamename = users.filter((user) => {
-    return user.username === username;
-  });
-  return userswithsamename.length > 0;
-}
 
 const authenticatedUser = (username,password)=>{ //returns boolean
 //write code to check if username and password match the one we have in records.
@@ -47,6 +40,8 @@ regd_users.post("/login", (req,res) => {
 });
 
 // Add a book review
+//To leave a review, go to Postman, make a put request to /customer/auth/review/[book isbn], then enter your review s json {"review": "such a good book"}
+
 regd_users.put("/auth/review/:isbn", (req, res) => {
     //Get the ISBN from the URL
     const ISBN = req.params.isbn;
@@ -73,6 +68,5 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 });
 
 module.exports.authenticated = regd_users;
-module.exports.isValid = isValid;
 module.exports.users = users;
 module.exports.doesExist = doesExist;
