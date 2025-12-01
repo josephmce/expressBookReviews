@@ -171,8 +171,8 @@ public_users.get('/author/:author', function (req, res) {
         return res.status(404).json({ message: "No books can be found with this title." });
     }
 });*/
+
 //Get all books based on title using Promise callbacks
-//Get book details based on author using Callback Promise
 public_users.get('/title/:title',function (req, res) {
     const title = req.params.title.toLowerCase();
     //Create a Promise to simulate async book lookup
