@@ -83,6 +83,36 @@ public_users.get('/isbn/:isbn',function (req, res) {
     }
  });
 
+ //Creating a Promise. The promise will get resolved when timer times out after 6 seconds.
+ //In Postman, go to the URL of the site and append /isbn/[number] to the end to view the details of 1 book
+ public_users.get('/isbn/:isbn', function (req, res) {
+    const ISBN = req.params.isbn;
+    //Creating a Promise to simulate async book lookup
+    const getBookByISBN = new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const book = books[ISBN];
+            if (book) {
+                //Promise is resolved with book
+                resolve(book);
+            } else {
+                //Otherwise reject with error message
+                reject("This book can't be found.");
+            }
+        }, 2000); //Simulate 2-second delay
+    });
+
+    //Call the promise
+    getBookByISBN.then((book) => {
+        //If the promise resolves successfully then display the book
+        res.status(200).json(book);
+        })
+        //If the promise is rejected, executes this error message
+        .catch((errMessage) => {
+            res.status(404).json({ message: errMessage });
+        });
+});
+
+
 
   
 // Get book details based on author
