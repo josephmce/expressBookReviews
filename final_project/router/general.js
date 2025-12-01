@@ -23,6 +23,7 @@ public_users.post("/register", (req,res) => {
   return res.status(404).json({ message: "Unable to register user." });
 });
 
+/*
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
     //Gets the list of books and displays, check in postman with a Get request
@@ -30,7 +31,26 @@ public_users.get('/',function (req, res) {
 
     // Send it as a JSON response
     res.status(200).send(booksString);
+});*/
+
+// Get the book list available in the shop using async-await with Axios
+// Simulate async fetching of books
+function fetchBooks() {
+    return new Promise((resolve) => {
+        setTimeout(() => resolve(books), 3500); // simulates 3.5s delay
+    });
+}
+
+public_users.get('/', async (req, res) => {
+    try {
+        const allBooks = await fetchBooks(); // wait for "async" operation
+        res.status(200).send(JSON.stringify(allBooks, null, 2));
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching books" });
+    }
 });
+
+
 
 // Get book details based on ISBN
 //In Postman, go to the URL of the site and append /isbn/[number] to the end to view the details of 1 book
