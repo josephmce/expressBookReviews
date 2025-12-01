@@ -33,17 +33,19 @@ public_users.get('/',function (req, res) {
     res.status(200).send(booksString);
 });*/
 
-// Get the book list available in the shop using async-await with Axios
-// Simulate async fetching of books
+//Get the book list available in the shop using async-await with Axios
+//Simulate async fetching of books
 function fetchBooks() {
     return new Promise((resolve) => {
-        setTimeout(() => resolve(books), 3500); // simulates 3.5s delay
+        //Simulates 3.5s delay
+        setTimeout(() => resolve(books), 3500);
     });
 }
 
 public_users.get('/', async (req, res) => {
     try {
-        const allBooks = await fetchBooks(); // wait for "async" operation
+        //Wait for "async" operation
+        const allBooks = await fetchBooks();
         res.status(200).send(JSON.stringify(allBooks, null, 2));
     } catch (err) {
         res.status(500).json({ message: "Error fetching books" });
@@ -54,6 +56,20 @@ public_users.get('/', async (req, res) => {
 
 // Get book details based on ISBN
 //In Postman, go to the URL of the site and append /isbn/[number] to the end to view the details of 1 book
+/*public_users.get('/isbn/:isbn',function (req, res) {
+    //Extract the ISBN from the URL
+    const isbn = req.params.isbn;
+    //Look up the book using the ISBN in the books object
+    const book = books[isbn];
+
+    if (book) {
+        return res.status(200).json(book);
+    } else {
+        return res.status(404).json({ message: "This book cannot be found." });
+    }
+ });*/
+//Using a Promise callback to get the books based on ISBN
+
 public_users.get('/isbn/:isbn',function (req, res) {
     //Extract the ISBN from the URL
     const isbn = req.params.isbn;
@@ -66,6 +82,8 @@ public_users.get('/isbn/:isbn',function (req, res) {
         return res.status(404).json({ message: "This book cannot be found." });
     }
  });
+
+
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
