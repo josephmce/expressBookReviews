@@ -4,9 +4,11 @@ let books = require("./booksdb.js");
 const regd_users = express.Router();
 
 let users = [];
+
 const doesExist = (username) => {
     return users.some(user => user.username === username);
   };
+  
 const isValid = (username)=>{ //returns boolean
 //write code to check is the username is valid
   let userswithsamename = users.filter((user) => {
