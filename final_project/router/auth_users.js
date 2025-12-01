@@ -8,7 +8,7 @@ let users = [];
 const doesExist = (username) => {
     return users.some(user => user.username === username);
   };
-  
+
 const isValid = (username)=>{ //returns boolean
 //write code to check is the username is valid
   let userswithsamename = users.filter((user) => {
@@ -27,7 +27,6 @@ const authenticatedUser = (username,password)=>{ //returns boolean
 
 //only registered users can login - Route to handle user login
 regd_users.post("/login", (req,res) => {
-  //Write your code here
   const username = req.body.username;
   const password = req.body.password;
   if (!username || !password) {
@@ -48,8 +47,28 @@ regd_users.post("/login", (req,res) => {
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    //Get the ISBN from the URL
+    const ISBN = req.params.isbn;
+    //Get the review text from the request body
+    const review = req.body.review;
+    //Retrieve logged in user's username
+    const username = req.session.authorization.username;
+    //Look up the book via the ISBN
+    const book = books[ISBN];
+
+    if (!book) {
+        return res.status(404).json({ message: "Cannot find the book" });
+    }
+    //If the review is empty or contains only spaces then display this message
+    if (!review || review.trim() === "") {
+        return res.status(400).json({ message: "Review cannot be empty" });
+    }
+
+    // Add or update the review
+    book.reviews[username] = review;
+
+    return res.status(200).json({ message: `${username}, your review for ${book.title} has been added/updated successfully!` });
+    //To make the PUT request, go to postman, enter /customer/auth/review/1 as the put request. Then "review": "Such a great book!" as the JSON body. 
 });
 
 module.exports.authenticated = regd_users;
