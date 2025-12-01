@@ -8,6 +8,7 @@ const public_users = express.Router();
 
 
 // Route to handle user registration
+//To Register, go to Postman, make a POST request to /register, with parameters as raw JSON: {"username": "johndoe", "password": "mypassword"}
 public_users.post("/register", (req,res) => {
   const username = req.body.username;
   const password = req.body.password;

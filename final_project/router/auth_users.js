@@ -26,6 +26,7 @@ const authenticatedUser = (username,password)=>{ //returns boolean
 }
 
 //only registered users can login - Route to handle user login
+//To login, go to Postman, go to the url /customer/login, then enter in the body, raw json: {"username": "yourusername", "password":"yourpassword"}
 regd_users.post("/login", (req,res) => {
   const username = req.body.username;
   const password = req.body.password;
