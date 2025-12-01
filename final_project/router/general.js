@@ -68,22 +68,9 @@ public_users.get('/', async (req, res) => {
         return res.status(404).json({ message: "This book cannot be found." });
     }
  });*/
+
+
 //Using a Promise callback to get the books based on ISBN
-
-public_users.get('/isbn/:isbn',function (req, res) {
-    //Extract the ISBN from the URL
-    const isbn = req.params.isbn;
-    //Look up the book using the ISBN in the books object
-    const book = books[isbn];
-
-    if (book) {
-        return res.status(200).json(book);
-    } else {
-        return res.status(404).json({ message: "This book cannot be found." });
-    }
- });
-
- //Creating a Promise. The promise will get resolved when timer times out after 6 seconds.
  //In Postman, go to the URL of the site and append /isbn/[number] to the end to view the details of 1 book
  public_users.get('/isbn/:isbn', function (req, res) {
     const ISBN = req.params.isbn;
@@ -98,7 +85,7 @@ public_users.get('/isbn/:isbn',function (req, res) {
                 //Otherwise reject with error message
                 reject("This book can't be found.");
             }
-        }, 2000); //Simulate 2-second delay
+        }, 5000); //Simulate 5s delay
     });
 
     //Call the promise
@@ -116,7 +103,7 @@ public_users.get('/isbn/:isbn',function (req, res) {
 
   
 // Get book details based on author
-public_users.get('/author/:author',function (req, res) {
+/*public_users.get('/author/:author',function (req, res) {
     //Get author from url string, convert to lowercase
   const author = req.params.author.toLowerCase();
   //Variable to store list of matched books
@@ -135,7 +122,37 @@ public_users.get('/author/:author',function (req, res) {
     } else {
         return res.status(404).json({ message: "No books can be found for this author." });
     }
-}); 
+}); */
+
+//Get book details based on author using Callback Promise
+public_users.get('/author/:author', function (req, res) {
+    const author = req.params.author.toLowerCase();
+    //Create a Promise to simulate async book lookup
+    const getBooksByAuthor = new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const matchedBooksList = {};
+            //Loop through the list of books and match the author
+            for (let ISBN in books) {
+                if (books[ISBN].author.toLowerCase() === author) {
+                    matchedBooksList[ISBN] = books[ISBN];
+                }
+            }
+            //This returns an array of all the keys in the matchedBooksList object
+            if (Object.keys(matchedBooksList).length > 0) {
+                //if it's greater than 0 then it resolves with the matched books
+                resolve(matchedBooksList);
+            } else {
+                reject("No books found for this author."); //promise rejected with error message
+            }
+        }, 2400); //Simulate 2.4s delay
+    });
+    //Call the Promise and handle results
+    getBooksByAuthor
+        .then((matchedBooks) => res.status(200).json(matchedBooks))
+        .catch((errMessage) => res.status(404).json({ message: errMessage }));
+});
+
+
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
