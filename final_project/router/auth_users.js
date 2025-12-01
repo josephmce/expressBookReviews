@@ -4,7 +4,9 @@ let books = require("./booksdb.js");
 const regd_users = express.Router();
 
 let users = [];
-
+const doesExist = (username) => {
+    return users.some(user => user.username === username);
+  };
 const isValid = (username)=>{ //returns boolean
 //write code to check is the username is valid
   let userswithsamename = users.filter((user) => {
@@ -21,7 +23,7 @@ const authenticatedUser = (username,password)=>{ //returns boolean
   return validusers.length > 0;
 }
 
-//only registered users can login
+//only registered users can login - Route to handle user login
 regd_users.post("/login", (req,res) => {
   //Write your code here
   const username = req.body.username;
@@ -51,3 +53,4 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
 module.exports.users = users;
+module.exports.doesExist = doesExist;

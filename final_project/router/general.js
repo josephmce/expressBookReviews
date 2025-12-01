@@ -4,7 +4,7 @@ let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
-
+// Route to handle user registration
 public_users.post("/register", (req,res) => {
   const username = req.body.username;
   const password = req.body.password;
