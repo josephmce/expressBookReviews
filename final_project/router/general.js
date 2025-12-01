@@ -45,9 +45,25 @@ public_users.get('/isbn/:isbn',function (req, res) {
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
-});
+    //Get author from url string, convert to lowercase
+  const author = req.params.author.toLowerCase();
+  //Variable to store list of matched books
+  const matchedBooksList = {};
+  //For loop to go through each ISBN keys (book objects). 
+  for (let isbn in books){
+    //Then access the book object using the ISBN key. Then checks if the book's author matches the author pass in the URL 
+    //Use toLowerCase here too so the case entered doesn't matter
+    if (books[isbn].author.toLowerCase() === author) {
+        //If the author matches then add the book to the matchedBooklist object using the ISBN ID as the key
+        matchedBooksList[isbn] = books[isbn];
+    }
+  }
+  if (Object.keys(matchedBooksList).length > 0) {
+    return res.status(200).json(matchedBooksList);
+    } else {
+        return res.status(404).json({ message: "No books can be found for this author." });
+    }
+}); 
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
